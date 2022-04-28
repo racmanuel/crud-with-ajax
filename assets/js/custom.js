@@ -1,4 +1,5 @@
 jQuery(document).ready(function ($) {
+    $('#alerts').hide();
     $('#formulario').submit(function (e) {
         e.preventDefault();
         var nombre = $('#name_customer').val();
@@ -15,15 +16,25 @@ jQuery(document).ready(function ($) {
                 estados: estados
             },
             beforeSend: function (response) {
-                $('#alert').html('Enviando ...');
+                $('#alerts').addClass('is-info');
+                $('#alerts').show();
+                $('#alerts .message-header').html('Enviando datos...');
+                $('#alerts .message-body').html('Tomara unos segundos...');
             },
             success: function (response) {
                 // Actualiza el mensaje con la respuesta
-                $('#alert').html('Enviado');
+                $('#alerts').addClass('is-success');
+                $('#alerts').show();
+                $('#alerts .message-header').html('Enviado');
+                $('#alerts .message-body').html('Tu datos se han almacenado correctamente en la Base de Datos.');
                 console.log(response);
             },
             error: function (response) {
-                $('#alert').html('Ocurrio un problema con el envio:' + response);
+                 // Actualiza el mensaje con la respuesta
+                 $('#alerts').addClass('is-danger');
+                 $('#alerts').show();
+                 $('#alerts .message-header').html('Error');
+                 $('#alerts .message-body').html('Ha ocuriido un error al enviar los datos a la Base de Datos, intentelo nuevamente.');
             }
         })
     });

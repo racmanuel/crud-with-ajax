@@ -4,6 +4,7 @@ Plugin Name: CRUD with AJAX
  */
 function crud_enqueue_scripts()
 {
+    wp_register_style('bulma-css', 'https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css', '1.0', 'all');
     wp_enqueue_script('custom-js', plugin_dir_url(__FILE__) . '/assets/js/custom.js', array('jquery'), '1.0', true);
     wp_localize_script('custom-js', 'ajax_object', array(
         'ajax_url' => admin_url('admin-ajax.php'),
@@ -14,29 +15,47 @@ add_action('wp_enqueue_scripts', 'crud_enqueue_scripts');
 add_shortcode('formulario', 'crud_formulario');
 function crud_formulario()
 {
+    wp_enqueue_style('bulma-css');
     ?>
-   <form id="formulario" name="formulario" method="POST" action="">
-    <label for="name_customer">Nombre:</label>
-    <br>
-    <input type="text" class="form-control" name="name_customer" id="name_customer">
-    <br>
-    <label for="email_customer">Email:</label>
-    <br>
-    <input type="email" name="email_customer" id="email_customer">
-    <br>
-    <label for="estados">Ciudad/Estado</label>
-    <br>
+<form id="formulario" name="formulario" method="POST" action="">
+<div class="field">
+  <label class="label">Nombre</label>
+  <div class="control">
+    <input class="input" type="text" placeholder="e.g Alex Smith" name="name_customer" id="name_customer">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Email</label>
+  <div class="control">
+    <input class="input" type="email" placeholder="e.g. alexsmith@gmail.com" name="email_customer" id="email_customer">
+  </div>
+</div>
+
+<div class="field">
+  <label class="label">Ciudad</label>
+  <div class="control">
+    <div class="select">
     <select name="estados" id="estados">
         <option selected="selected" value="">-- Seleciona una Ciudad --</option>
         <option value="SLP">San Luis Potosí</option>
         <option value="QRO">Queretaro</option>
     </select>
-    <br>
-    <input type="submit" value="submit" />
-</form>
-<div id="alert">
+  </div>
 </div>
-    <?php
+<br>
+<div class="control">
+  <button type="submit" class="button is-primary">Enviar</button>
+</div>
+</form>
+<br>
+<article id="alerts" class="message">
+  <div class="message-header">
+  </div>
+  <div class="message-body">
+  </div>
+</article>
+<?php
 }
 
 /**
