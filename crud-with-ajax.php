@@ -21,17 +21,6 @@ add_action('wp_enqueue_scripts', 'crud_enqueue_scripts');
 add_shortcode('formulario', 'crud_formulario');
 function crud_formulario()
 {
-
-    global $wpdb;
-
-    $id = $_GET['id'];
-    echo $id;
-
-    $table_name = $wpdb->prefix . 'crud';
-
-    $consulta = $wpdb->get_results("SELECT * FROM $table_name WHERE ID = $id ");
-    echo var_dump($consulta);
-
     wp_enqueue_style('bulma-css');
     ?>
 <form id="formulario" name="formulario" method="POST" action="">
