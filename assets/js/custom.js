@@ -39,6 +39,9 @@ jQuery(document).ready(function ($) {
         })
     });
 
+    /**
+     * Llamada de Ajax para Editar Registro
+     */
     $('#formulario-edit').submit(function (e) {
         e.preventDefault();
         var id = $('#id').val();
@@ -86,13 +89,45 @@ jQuery(document).ready(function ($) {
         "columnDefs": [ {
             "targets": -1,
             "data": null,
-            "defaultContent": "<button>Editar</button>"
+            "defaultContent": "<button>Editar</button><button id='delete'>Eliminar</button>"
         }]
     });
+
+    /**
+     * Al Hacer click obtienes el ID de la columna para Editar
+     */
     $('#example tbody').on( 'click', 'button', function () {
         var data = table.row( $(this).parents('tr') ).data();
-        alert("El ID es " + data[0]);
+        //alert("El ID es " + data[0]);
         window.location.href = '/edit?id='+data[0];
+    } );
+
+    /**
+     * Al Hacer click obtienes el ID de la columna para Borrar
+     */
+     $('#example tbody').on( 'click', '#delete', function (e) {
+        e.preventDefault();
+        var data = table.row( $(this).parents('tr') ).data();
+        //alert("El ID es " + data[0]);
+        window.location.href = '?id='+data[0];
+        var id = data[0];
+        $.ajax({
+            type: 'GET',
+            url: ajax_object.ajax_url, // Pon aquí tu URL
+            data: {
+                action: 'delete_custom_form',
+                id_customer: id,
+            },
+            beforeSend: function (response) {
+               console.log('Cargando...');
+            },
+            success: function (response) {
+                console.log('Eliminado.');
+            },
+            error: function (response) {
+                console.log('Error...');
+            }
+        })
     } );
     
     /**

@@ -102,20 +102,16 @@ function crud_edit()
     <div class="control">
       <div class="select">
         <select name="estados" id="estados">
-          <?php
-switch ($data->ciudad) {
-            case 'SLP':
-                # code...
-                echo '<option value="SLP">San Luis Potosí</option>';
-                break;
-            case 'QRO':
-                echo '<option value="QRO">Queretaro</option>';
-                break;
-            default:
-                # code...
-                break;
-        }
-        ?>
+            <?php if($data->ciudad == 'SLP'): ?>
+            <option value="SLP" selected>San Luis Potosí</option>
+            <?php else: ?>
+            <option value="SLP">San Luis Potosí</option>
+            <?php endif; ?>
+            <?php if($data->ciudad == 'QRO'): ?>
+            <option value="QRO" selected>Queretaro</option>
+            <?php else: ?>
+            <option value="QRO">Queretaro</option>
+            <?php endif; ?>
         </select>
       </div>
     </div>
@@ -201,6 +197,32 @@ function update_custom_form()
 }
 add_action('wp_ajax_nopriv_update_custom_form', 'update_custom_form'); // Para usuarios no logueados
 add_action('wp_ajax_update_custom_form', 'update_custom_form'); // Para usuarios logueados
+
+/**
+ * Delete a Record
+ */
+
+function delete_custom_form()
+{
+// Nuestro código de manipulación de los datos
+    global $wpdb;
+
+    $table_name = $wpdb->prefix . 'crud';
+
+    $id_customer = $_GET['id_customer'];
+
+    $wpdb->delete(
+        $table_name,
+        array(
+          'ID' => $id_customer
+        )
+    );
+
+//wp_redirect(site_url('/')); // <-- here goes address of site that user should be redirected after submitting that form
+    wp_die();
+}
+add_action('wp_ajax_nopriv_delete_custom_form', 'delete_custom_form'); // Para usuarios no logueados
+add_action('wp_ajax_delete_custom_form', 'delete_custom_form'); // Para usuarios logueados
 
 global $crud_db_version;
 $crud_db_version = '1.0';
